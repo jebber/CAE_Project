@@ -8,6 +8,7 @@ ChannelConfig::ChannelConfig() {
 	set_fov_v(0);
 	set_location_h(0);
 	set_location_v(0);
+	set_creation(false);
 }
 
 ChannelConfig::ChannelConfig(ifstream& in_file) {
@@ -68,6 +69,11 @@ void ChannelConfig::set_location_v(int input) {
 	this->location_v = input;
 }
 
+void ChannelConfig::set_creation(bool input)
+{
+	this->creation = input;
+}
+
 //Getters
 int ChannelConfig::get_number() {
 	return this->number;
@@ -83,6 +89,11 @@ int ChannelConfig::get_location_h() {
 }
 int ChannelConfig::get_location_v() {
 	return this->location_v;
+}
+
+bool ChannelConfig::get_creation()
+{
+	return this->creation;
 }
 
 //Output

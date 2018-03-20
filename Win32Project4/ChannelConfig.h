@@ -18,6 +18,7 @@ private:
 	int fov_v;
 	int location_h;
 	int location_v;
+	bool creation;
 
 public:
 	//channel constructor from config file 
@@ -33,6 +34,7 @@ public:
 	void set_fov_v(int input);
 	void set_location_h(int input);
 	void set_location_v(int input);
+	void set_creation(bool input);
 
 	//Getters
 	int get_number();
@@ -40,6 +42,7 @@ public:
 	int get_fov_v();
 	int get_location_h();
 	int get_location_v();
+	bool get_creation();
 
 	//Output
 	void display_channel_console();

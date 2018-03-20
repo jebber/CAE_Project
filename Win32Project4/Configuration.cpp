@@ -41,6 +41,7 @@ Configuration::Configuration(ifstream& in_file) {
 }
 Configuration::Configuration() {
 	this->set_name("Untitled Configuration");
+	//this->channels = NULL;
 }
 
 Configuration::~Configuration() {

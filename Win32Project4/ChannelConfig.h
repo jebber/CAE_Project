@@ -18,6 +18,8 @@ private:
 	int fov_v;
 	int location_h;
 	int location_v;
+	int resolution_h;
+	int resolution_v;
 	bool creation;
 
 public:
@@ -34,6 +36,8 @@ public:
 	void set_fov_v(int input);
 	void set_location_h(int input);
 	void set_location_v(int input);
+	void set_resolution_h(int input);
+	void set_resolution_v(int input);
 	void set_creation(bool input);
 
 	//Getters
@@ -42,6 +46,8 @@ public:
 	int get_fov_v();
 	int get_location_h();
 	int get_location_v();
+	int get_resolution_h();
+	int get_resolution_v();
 	bool get_creation();
 
 	//Output

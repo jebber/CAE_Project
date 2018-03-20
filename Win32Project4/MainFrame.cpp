@@ -232,8 +232,8 @@ void MainFrame::OnChannelChannel1()
 	{
 		dlg.ChannelHFOV = myConfig->get_channels().at(0).get_fov_h();
 		dlg.ChannelVFOV = myConfig->get_channels().at(0).get_fov_v();
-		dlg.ChannelResolutionL = ChannelResolutionL;		//DONT HAVE in CONFIG
-		dlg.ChannelResolutionR = ChannelResolutionR;		//DONT HAVE in CONFIG
+		dlg.ChannelResolutionL = myConfig->get_channels().at(0).get_resolution_h();
+		dlg.ChannelResolutionR = myConfig->get_channels().at(0).get_resolution_v();
 		dlg.ChannelDistance = ChannelDistance;			//DONT HAVE in CONFIG
 		dlg.ChannelIP = ChannelIP;		//DONT HAVE in CONFIG
 		dlg.ChannelPossitionL = myConfig->get_channels().at(0).get_location_h();
@@ -244,8 +244,8 @@ void MainFrame::OnChannelChannel1()
 		{
 			myConfig->channels.at(0).set_fov_h(dlg.ChannelHFOV);
 			myConfig->channels.at(0).set_fov_v(dlg.ChannelVFOV);
-			ChannelResolutionL = dlg.ChannelResolutionL;
-			ChannelResolutionR = dlg.ChannelResolutionR;
+			myConfig->channels.at(0).set_resolution_h(dlg.ChannelResolutionL);
+			myConfig->channels.at(0).set_resolution_v(dlg.ChannelResolutionR);
 			ChannelDistance = dlg.ChannelDistance;
 			ChannelIP = dlg.ChannelIP;
 			myConfig->channels.at(0).set_location_h(dlg.ChannelPossitionL);
@@ -267,8 +267,8 @@ void MainFrame::OnChannelChannel2()
 	{
 		dlg.ChannelHFOV = myConfig->get_channels().at(1).get_fov_h();
 		dlg.ChannelVFOV = myConfig->get_channels().at(1).get_fov_v();
-		dlg.ChannelResolutionL = ChannelResolutionL;		//DONT HAVE in CONFIG
-		dlg.ChannelResolutionR = ChannelResolutionR;		//DONT HAVE in CONFIG
+		dlg.ChannelResolutionL = myConfig->get_channels().at(1).get_resolution_h();
+		dlg.ChannelResolutionR = myConfig->get_channels().at(1).get_resolution_v();
 		dlg.ChannelDistance = ChannelDistance;			//DONT HAVE in CONFIG
 		dlg.ChannelIP = ChannelIP;		//DONT HAVE in CONFIG
 		dlg.ChannelPossitionL = myConfig->get_channels().at(1).get_location_h();
@@ -279,8 +279,8 @@ void MainFrame::OnChannelChannel2()
 		{
 			myConfig->channels.at(1).set_fov_h(dlg.ChannelHFOV);
 			myConfig->channels.at(1).set_fov_v(dlg.ChannelVFOV);
-			ChannelResolutionL = dlg.ChannelResolutionL;
-			ChannelResolutionR = dlg.ChannelResolutionR;
+			myConfig->channels.at(1).set_resolution_h(dlg.ChannelResolutionL);
+			myConfig->channels.at(1).set_resolution_v(dlg.ChannelResolutionR);
 			ChannelDistance = dlg.ChannelDistance;
 			ChannelIP = dlg.ChannelIP;
 			myConfig->channels.at(1).set_location_h(dlg.ChannelPossitionL);

@@ -8,6 +8,8 @@ ChannelConfig::ChannelConfig() {
 	set_fov_v(0);
 	set_location_h(0);
 	set_location_v(0);
+	set_resolution_h(0);
+	set_resolution_v(0);
 	set_creation(false);
 }
 
@@ -37,6 +39,14 @@ ChannelConfig::ChannelConfig(ifstream& in_file) {
 		else if (in_string == "location_v") {
 			getline(in_file, in_string);
 			this->set_location_v(stoi(in_string, nullptr, 0));
+		}
+		else if (in_string == "resolution_h") {
+			getline(in_file, in_string);
+			this->set_resolution_h(stoi(in_string, nullptr, 0));
+		}
+		else if (in_string == "resolution_v") {
+			getline(in_file, in_string);
+			this->set_resolution_v(stoi(in_string, nullptr, 0));
 		}
 		else {
 			cout << "ChannelConfig type not recognized." << endl;
@@ -69,6 +79,16 @@ void ChannelConfig::set_location_v(int input) {
 	this->location_v = input;
 }
 
+void ChannelConfig::set_resolution_h(int input)
+{
+	this->resolution_h = input;
+}
+
+void ChannelConfig::set_resolution_v(int input)
+{
+	this->resolution_v = input;
+}
+
 void ChannelConfig::set_creation(bool input)
 {
 	this->creation = input;
@@ -91,6 +111,16 @@ int ChannelConfig::get_location_v() {
 	return this->location_v;
 }
 
+int ChannelConfig::get_resolution_h()
+{
+	return this->resolution_h;
+}
+
+int ChannelConfig::get_resolution_v()
+{
+	return this->resolution_v;
+}
+
 bool ChannelConfig::get_creation()
 {
 	return this->creation;
@@ -103,6 +133,8 @@ void ChannelConfig::display_channel_console() {
 	cout << "fov_v:" << this->get_fov_h() << endl;
 	cout << "location_h:" << this->get_location_h() << endl;
 	cout << "location_v:" << this->get_location_v() << endl;
+	cout << "resolution_h:" << this->get_resolution_h() << endl;
+	cout << "resolution_v:" << this->get_resolution_v() << endl;
 }
 void ChannelConfig::output_channel_file(ofstream& out_file) {
 	out_file << "number:" << this->get_number() << endl;
@@ -110,4 +142,6 @@ void ChannelConfig::output_channel_file(ofstream& out_file) {
 	out_file << "fov_v:" << this->get_fov_h() << endl;
 	out_file << "location_h:" << this->get_location_h() << endl;
 	out_file << "location_v:" << this->get_location_v() << endl;
+	out_file << "resolution_h:" << this->get_resolution_h() << endl;
+	out_file << "resolution_v:" << this->get_resolution_v() << endl;
 }

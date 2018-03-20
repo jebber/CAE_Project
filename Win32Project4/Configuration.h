@@ -20,6 +20,7 @@ private:
 	float viewer_distance; //Measured in inches
 	int num_channels;
 	int test_pattern;
+	vector<ChannelConfig>* channels;
 	
 
 public:
@@ -28,7 +29,7 @@ public:
 	Configuration();
 	~Configuration();
 	
-	vector<ChannelConfig> channels;
+	
 
 	//Setters
 	void set_name(string input);
@@ -45,7 +46,7 @@ public:
 	float get_viewer_distance();
 	int get_num_channels();
 	int get_test_pattern();
-	vector<ChannelConfig> get_channels();
+	vector<ChannelConfig>* get_channels();
 
 	//Output
 	void display_config_console();

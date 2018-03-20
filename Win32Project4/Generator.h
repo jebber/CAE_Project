@@ -17,7 +17,7 @@ public:
 	void OnPaint();
 	void createImage(CPaintDC & x, BOOL display_type);
 	Bitmap* totalFOV_Image;
-	std::vector<ChannelConfig> channels;
+	std::vector<ChannelConfig>* channels;
 	std::vector<Bitmap*> channel_images;
 
 

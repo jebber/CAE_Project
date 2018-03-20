@@ -3,6 +3,7 @@
 //Constructors & Destructor
 Configuration::Configuration(ifstream& in_file) {
 	string in_string;
+	channels = new vector<ChannelConfig>;
 
 	while (getline(in_file, in_string, ':')) {
 		if (in_string == "name") {
@@ -32,7 +33,7 @@ Configuration::Configuration(ifstream& in_file) {
 		else if (in_string == "-") {
 			getline(in_file, in_string);
 			ChannelConfig* temp = new ChannelConfig(in_file);
-			channels.push_back(*temp);
+			channels->push_back(*temp);
 		}
 		else {
 			cout << "Configuration type not recognized" << endl;
@@ -41,7 +42,7 @@ Configuration::Configuration(ifstream& in_file) {
 }
 Configuration::Configuration() {
 	this->set_name("Untitled Configuration");
-	//this->channels = NULL;
+	channels = new vector<ChannelConfig>;
 }
 
 Configuration::~Configuration() {
@@ -87,7 +88,7 @@ int Configuration::get_num_channels() {
 int Configuration::get_test_pattern() {
 	return this->test_pattern;
 }
-vector<ChannelConfig> Configuration::get_channels()
+vector<ChannelConfig>* Configuration::get_channels()
 {
 	return channels;
 }
@@ -100,7 +101,7 @@ void Configuration::display_config_console() {
 	cout << "viewer_distance:" << this->get_viewer_distance() << endl;
 	cout << "num_channels:" << this->get_num_channels() << endl;
 	cout << "test_pattern:" << this->get_test_pattern() << endl;
-	for (vector<ChannelConfig>::iterator it = channels.begin(); it != channels.end(); ++it) {
+	for (vector<ChannelConfig>::iterator it = channels->begin(); it != channels->end(); ++it) {
 		cout << "-:" << endl;
 		it->display_channel_console();
 	}
@@ -113,7 +114,7 @@ void Configuration::output_config_file(ofstream& out_file) {
 	out_file << "viewer_distance:" << this->get_viewer_distance() << endl;
 	out_file << "num_channels:" << this->get_num_channels() << endl;
 	out_file << "test_pattern:" << this->get_test_pattern() << endl;
-	for (vector<ChannelConfig>::iterator it = channels.begin(); it != channels.end(); ++it) {
+	for (vector<ChannelConfig>::iterator it = channels->begin(); it != channels->end(); ++it) {
 		out_file << "-:" << endl;
 		it->output_channel_file(out_file);
 	}

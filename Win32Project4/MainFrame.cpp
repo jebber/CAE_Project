@@ -100,15 +100,7 @@ public:
 		m_pMainWnd->ShowWindow(SW_SHOW);
 		m_pMainWnd->UpdateWindow();
 		GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
-		
-
-		myConfig = new Configuration();						//Clean up!
-		ChannelConfig *myChannel = new ChannelConfig();
-		myConfig->channels.push_back(*myChannel);
-		myChannel = new ChannelConfig();
-		myConfig->channels.push_back(*myChannel);
-
-		
+		myConfig = new Configuration();
 		return TRUE;
 	}
 	//MAYBE ADD THE BOOL ECITINSTANCE???
@@ -128,9 +120,9 @@ void MainFrame::OnFileNew()
 {
 	myConfig = new Configuration();						//Clean up!
 	ChannelConfig *myChannel = new ChannelConfig();
-	myConfig->channels.push_back(*myChannel);
-	myChannel = new ChannelConfig();
-	myConfig->channels.push_back(*myChannel);
+	//myConfig->channels.push_back(*myChannel);
+	//myChannel = new ChannelConfig();
+	//myConfig->channels.push_back(*myChannel);
 	NumberOfChannels =_T("0");
 }
 
@@ -171,47 +163,44 @@ void MainFrame::OnFileSave()
 void MainFrame::OnConfigurationScreen()
 {
 	Screen dlg;
+	
+	dlg.NumberOfChannels.Format(_T("%d"), myConfig->get_num_channels());
 	dlg.ViewerDistance = myConfig->get_viewer_distance();
 	dlg.ScreenGeometry = ScreenGeometry;
 	dlg.ScreenHFOV = myConfig->get_total_fov_h();
 	dlg.ScreenVFOV = myConfig->get_total_fov_v();
-	//dlg.NumberOfChannels = myConfig->get_num_channels();
 	dlg.NumberOfChannels = NumberOfChannels;
 	dlg.TestPattern = myConfig->get_test_pattern();
 	
 	if (dlg.DoModal() == IDOK)
 	{
+		int new_num_channels = _ttoi(dlg.NumberOfChannels);
 		//ViewerDistance = dlg.ViewerDistance;
 		myConfig->set_viewer_distance(dlg.ViewerDistance);
 		ScreenGeometry = dlg.ScreenGeometry;
 		myConfig->set_total_fov_h(dlg.ScreenHFOV);
 		myConfig->set_total_fov_v(dlg.ScreenVFOV);
 		myConfig->set_test_pattern(dlg.TestPattern);
+		
 
-		if (dlg.NumberOfChannels == _T("1"))							//Change to FOR loop in future.
-		{
-			//ChannelConfig *myChannel = new ChannelConfig();
-			myConfig->channels.at(0).set_creation(true);
-			//myConfig->channels.push_back(*myChannel);
-			NumberOfChannels = _T("1");
+		if (myConfig->get_num_channels() == 0) {
+			for (int i = 0; i < new_num_channels; i++) {
+				ChannelConfig *channel = new ChannelConfig();
+				myConfig->get_channels()->push_back(*channel);
+			}
 		}
-		else if (dlg.NumberOfChannels == _T("2"))
-		{
-			//ChannelConfig *myChannel = new ChannelConfig();
-			myConfig->channels.at(0).set_creation(true);
-			//myConfig->channels.push_back(*myChannel);
-
-			//ChannelConfig *myChannel2 = new ChannelConfig();
-			myConfig->channels.at(1).set_creation(true);
-			//myConfig->channels.push_back(*myChannel2);
-
-			NumberOfChannels = _T("2");
+		else if (myConfig->get_num_channels() > new_num_channels) {
+			for (int i = myConfig->get_num_channels(); i < new_num_channels; i++) {
+				ChannelConfig *channel = new ChannelConfig();
+				myConfig->get_channels()->push_back(*channel);
+			}
 		}
-		//myConfig->set_num_channels(dlg.NumberOfChannels);
+		else {
+			myConfig->get_channels()->resize(new_num_channels);
+		}
+
+		myConfig->set_num_channels(new_num_channels);
 	}
-	//Invalidate();
-	//UpdateWindow();
-	
 }
 
 
@@ -224,32 +213,32 @@ void MainFrame::OnConfigurationChannel()
 void MainFrame::OnChannelChannel1()
 {
 	Channel dlg;
-	if (myConfig->get_channels().at(0).get_creation() == false)
+	if (myConfig->get_channels()->size() < 1)
 	{
 		MessageBox(_T("Channel 1 has not been initialized."), _T("Error"), MB_ICONERROR | MB_OK);
 	}
 	else
 	{
-		dlg.ChannelHFOV = myConfig->get_channels().at(0).get_fov_h();
-		dlg.ChannelVFOV = myConfig->get_channels().at(0).get_fov_v();
-		dlg.ChannelResolutionL = myConfig->get_channels().at(0).get_resolution_h();
-		dlg.ChannelResolutionR = myConfig->get_channels().at(0).get_resolution_v();
+		dlg.ChannelHFOV = myConfig->get_channels()->at(0).get_fov_h();
+		dlg.ChannelVFOV = myConfig->get_channels()->at(0).get_fov_v();
+		dlg.ChannelResolutionL = myConfig->get_channels()->at(0).get_resolution_h();
+		dlg.ChannelResolutionR = myConfig->get_channels()->at(0).get_resolution_v();
 		dlg.ChannelDistance = ChannelDistance;			//DONT HAVE in CONFIG
 		dlg.ChannelIP = ChannelIP;		//DONT HAVE in CONFIG
-		dlg.ChannelPossitionL = myConfig->get_channels().at(0).get_location_h();
-		dlg.ChannelPossitionR = myConfig->get_channels().at(0).get_location_v();
+		dlg.ChannelPossitionL = myConfig->get_channels()->at(0).get_location_h();
+		dlg.ChannelPossitionR = myConfig->get_channels()->at(0).get_location_v();
 		dlg.ChannelNumberChange = _T("Channel Number : 1");
 
 		if (dlg.DoModal() == IDOK)
 		{
-			myConfig->channels.at(0).set_fov_h(dlg.ChannelHFOV);
-			myConfig->channels.at(0).set_fov_v(dlg.ChannelVFOV);
-			myConfig->channels.at(0).set_resolution_h(dlg.ChannelResolutionL);
-			myConfig->channels.at(0).set_resolution_v(dlg.ChannelResolutionR);
+			myConfig->get_channels()->at(0).set_fov_h(dlg.ChannelHFOV);
+			myConfig->get_channels()->at(0).set_fov_v(dlg.ChannelVFOV);
+			myConfig->get_channels()->at(0).set_resolution_h(dlg.ChannelResolutionL);
+			myConfig->get_channels()->at(0).set_resolution_v(dlg.ChannelResolutionR);
 			ChannelDistance = dlg.ChannelDistance;
 			ChannelIP = dlg.ChannelIP;
-			myConfig->channels.at(0).set_location_h(dlg.ChannelPossitionL);
-			myConfig->channels.at(0).set_location_v(dlg.ChannelPossitionR);
+			myConfig->get_channels()->at(0).set_location_h(dlg.ChannelPossitionL);
+			myConfig->get_channels()->at(0).set_location_v(dlg.ChannelPossitionR);
 		}
 	}	
 }
@@ -259,32 +248,32 @@ void MainFrame::OnChannelChannel2()
 {
 	Channel dlg;
 	
-	if (myConfig->get_channels().at(1).get_creation() == false)
+	if (myConfig->get_channels()->size() < 2)
 	{
 		MessageBox(_T("Channel 2 has not been initialized."), _T("Error"), MB_ICONERROR | MB_OK);
 	}
 	else
 	{
-		dlg.ChannelHFOV = myConfig->get_channels().at(1).get_fov_h();
-		dlg.ChannelVFOV = myConfig->get_channels().at(1).get_fov_v();
-		dlg.ChannelResolutionL = myConfig->get_channels().at(1).get_resolution_h();
-		dlg.ChannelResolutionR = myConfig->get_channels().at(1).get_resolution_v();
+		dlg.ChannelHFOV = myConfig->get_channels()->at(1).get_fov_h();
+		dlg.ChannelVFOV = myConfig->get_channels()->at(1).get_fov_v();
+		dlg.ChannelResolutionL = myConfig->get_channels()->at(1).get_resolution_h();
+		dlg.ChannelResolutionR = myConfig->get_channels()->at(1).get_resolution_v();
 		dlg.ChannelDistance = ChannelDistance;			//DONT HAVE in CONFIG
 		dlg.ChannelIP = ChannelIP;		//DONT HAVE in CONFIG
-		dlg.ChannelPossitionL = myConfig->get_channels().at(1).get_location_h();
-		dlg.ChannelPossitionR = myConfig->get_channels().at(1).get_location_v();
+		dlg.ChannelPossitionL = myConfig->get_channels()->at(1).get_location_h();
+		dlg.ChannelPossitionR = myConfig->get_channels()->at(1).get_location_v();
 		dlg.ChannelNumberChange = _T("Channel Number : 2");
 
 		if (dlg.DoModal() == IDOK)
 		{
-			myConfig->channels.at(1).set_fov_h(dlg.ChannelHFOV);
-			myConfig->channels.at(1).set_fov_v(dlg.ChannelVFOV);
-			myConfig->channels.at(1).set_resolution_h(dlg.ChannelResolutionL);
-			myConfig->channels.at(1).set_resolution_v(dlg.ChannelResolutionR);
+			myConfig->get_channels()->at(1).set_fov_h(dlg.ChannelHFOV);
+			myConfig->get_channels()->at(1).set_fov_v(dlg.ChannelVFOV);
+			myConfig->get_channels()->at(1).set_resolution_h(dlg.ChannelResolutionL);
+			myConfig->get_channels()->at(1).set_resolution_v(dlg.ChannelResolutionR);
 			ChannelDistance = dlg.ChannelDistance;
 			ChannelIP = dlg.ChannelIP;
-			myConfig->channels.at(1).set_location_h(dlg.ChannelPossitionL);
-			myConfig->channels.at(1).set_location_v(dlg.ChannelPossitionR);
+			myConfig->get_channels()->at(1).set_location_h(dlg.ChannelPossitionL);
+			myConfig->get_channels()->at(1).set_location_v(dlg.ChannelPossitionR);
 		}
 	}
 }

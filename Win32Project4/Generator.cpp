@@ -175,7 +175,7 @@ void Generator::createImage(CPaintDC & x, BOOL display_type)
 			int pixelsPerDegreeY = totalFOV_height / 180;
 
 			//Loop through ChannelConfig vector, create and display bitmaps for each channel
-			for (std::vector<ChannelConfig>::iterator it = channels.begin(); it != channels.end(); it++) {
+			for (std::vector<ChannelConfig>::iterator it = channels->begin(); it != channels->end(); it++) {
 
 				//pixel location of center of channel
 				int channel_loc_hPixels = pixelsPerDegreeX * it->get_location_h();

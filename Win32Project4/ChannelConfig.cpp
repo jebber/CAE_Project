@@ -10,7 +10,6 @@ ChannelConfig::ChannelConfig() {
 	set_location_v(0);
 	set_resolution_h(0);
 	set_resolution_v(0);
-	set_creation(false);
 }
 
 ChannelConfig::ChannelConfig(ifstream& in_file) {
@@ -89,11 +88,6 @@ void ChannelConfig::set_resolution_v(int input)
 	this->resolution_v = input;
 }
 
-void ChannelConfig::set_creation(bool input)
-{
-	this->creation = input;
-}
-
 //Getters
 int ChannelConfig::get_number() {
 	return this->number;
@@ -119,11 +113,6 @@ int ChannelConfig::get_resolution_h()
 int ChannelConfig::get_resolution_v()
 {
 	return this->resolution_v;
-}
-
-bool ChannelConfig::get_creation()
-{
-	return this->creation;
 }
 
 //Output

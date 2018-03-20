@@ -16,7 +16,7 @@
 #include "Generator.h"
 #include "ChannelConfig.h"
 
-
+//TEST TEST HELLO WOORRRLLLDDDD -Dom
 Configuration *myConfig = NULL;
 
 class MainFrame :public CFrameWnd

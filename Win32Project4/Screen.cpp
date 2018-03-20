@@ -18,6 +18,7 @@ Screen::Screen(CWnd* pParent /*=NULL*/)
 	, ScreenHFOV(0)
 	, ScreenVFOV(0)
 	, NumberOfChannels(_T(""))
+	, TestPattern(0)
 {
 
 }
@@ -39,6 +40,7 @@ void Screen::DoDataExchange(CDataExchange* pDX)
 	DDV_MinMaxInt(pDX, ScreenVFOV, 0, 99999);
 	DDX_CBString(pDX, IDC_NUMBER_OF_CHANNELS, NumberOfChannels);
 	DDV_MaxChars(pDX, NumberOfChannels, 15);
+	DDX_Text(pDX, IDC_TEST_PATTERN, TestPattern);
 }
 
 

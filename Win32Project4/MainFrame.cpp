@@ -31,6 +31,7 @@ private:
 	int ViewerDistance{ 0 };
 	int ScreenHFOV{ 0 };
 	int ScreenVFOV{ 0 };
+	int TestPattern{ 0 };
 	CString NumberOfChannels{ _T("0") };
 	CString ScreenGeometry{ _T("") };
 
@@ -176,6 +177,7 @@ void MainFrame::OnConfigurationScreen()
 	dlg.ScreenVFOV = myConfig->get_total_fov_v();
 	//dlg.NumberOfChannels = myConfig->get_num_channels();
 	dlg.NumberOfChannels = NumberOfChannels;
+	dlg.TestPattern = myConfig->get_test_pattern();
 	
 	if (dlg.DoModal() == IDOK)
 	{
@@ -184,6 +186,8 @@ void MainFrame::OnConfigurationScreen()
 		ScreenGeometry = dlg.ScreenGeometry;
 		myConfig->set_total_fov_h(dlg.ScreenHFOV);
 		myConfig->set_total_fov_v(dlg.ScreenVFOV);
+		myConfig->set_test_pattern(dlg.TestPattern);
+
 		if (dlg.NumberOfChannels == _T("1"))							//Change to FOR loop in future.
 		{
 			//ChannelConfig *myChannel = new ChannelConfig();

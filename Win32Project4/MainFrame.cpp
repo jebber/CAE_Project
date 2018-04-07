@@ -1,29 +1,25 @@
-//MFC1.CPP - MFC Tutorial Part 1
-
 #include "stdafx.h"
 #include <afxwin.h>
 #include <afxdlgs.h>
 #include <iostream>
 #include <fstream>
 #include "resource.h"
-#include "MainDialog.h"
 #include "Screen.h"
 #include "Channel.h"
-#include "GrayScale.h"
 #include "ChannelDisplay.h"
 #include "FOVDisplay.h"
 #include "Configuration.h"
 #include "Generator.h"
 #include "ChannelConfig.h"
+#include "DisplayFrame.h"
 
-//TEST TEST HELLO WOORRRLLLDDDD -Dom
+
 Configuration *myConfig = NULL;
 
 class MainFrame :public CFrameWnd
 {
 private: 
 	CMenu MainMenu;
-	MainDialog *dlg;
 	std::ofstream outFile;
 	std::ifstream inFile;
 
@@ -63,8 +59,6 @@ public:
 	afx_msg void OnConfigurationChannel();
 	afx_msg void OnChannelChannel1();
 	afx_msg void OnChannelChannel2();
-	afx_msg void OnTestpatternsGrayscale();
-	afx_msg void OnBnClickedButtonDisplayFov();
 	afx_msg void OnDisplayChannels();
 	afx_msg void OnDisplayFov();
 	afx_msg void OnFileSave();
@@ -79,8 +73,6 @@ ON_COMMAND(ID_CONFIGURATION_SCREEN, &MainFrame::OnConfigurationScreen)
 ON_COMMAND(ID_CONFIGURATION_CHANNEL, &MainFrame::OnConfigurationChannel)
 ON_COMMAND(ID_CHANNEL_CHANNEL1, &MainFrame::OnChannelChannel1)
 ON_COMMAND(ID_CHANNEL_CHANNEL2, &MainFrame::OnChannelChannel2)
-ON_COMMAND(ID_TESTPATTERNS_GRAYSCALE, &MainFrame::OnTestpatternsGrayscale)
-ON_BN_CLICKED(ID_BUTTON_DISPLAY_FOV, &MainFrame::OnBnClickedButtonDisplayFov)
 ON_COMMAND(ID_DISPLAY_CHANNELS, &MainFrame::OnDisplayChannels)
 ON_COMMAND(ID_DISPLAY_FOV, &MainFrame::OnDisplayFov)
 ON_COMMAND(ID_FILE_SAVE, &MainFrame::OnFileSave)
@@ -119,10 +111,6 @@ MyApp theApp;
 void MainFrame::OnFileNew()
 {
 	myConfig = new Configuration();						//Clean up!
-	ChannelConfig *myChannel = new ChannelConfig();
-	//myConfig->channels.push_back(*myChannel);
-	//myChannel = new ChannelConfig();
-	//myConfig->channels.push_back(*myChannel);
 	NumberOfChannels =_T("0");
 }
 
@@ -169,7 +157,7 @@ void MainFrame::OnConfigurationScreen()
 	dlg.ScreenGeometry = ScreenGeometry;
 	dlg.ScreenHFOV = myConfig->get_total_fov_h();
 	dlg.ScreenVFOV = myConfig->get_total_fov_v();
-	dlg.NumberOfChannels = NumberOfChannels;
+	//dlg.NumberOfChannels = NumberOfChannels;
 	dlg.TestPattern = myConfig->get_test_pattern();
 	
 	if (dlg.DoModal() == IDOK)
@@ -278,67 +266,20 @@ void MainFrame::OnChannelChannel2()
 	}
 }
 
-
-void MainFrame::OnTestpatternsGrayscale()
-{
-	GrayScale dlg;
-	dlg.DoModal();
-
-	//GrayScale dlg;
-	//INT_PTR nRet = -1;
-	//nRet = dlg.DoModal();
-	
-	/*GrayScale *dlg;
-	dlg = new GrayScale;
-	dlg->Create(IDD_GRAY_SCALE);
-	dlg->ShowWindow(1); 
-
-	if (dlg->ID_BUTTON_DISPLAY_FOV)
-	{
-		dlg->EndDialog(IDD_GRAY_SCALE);
-
-	}*/
-
-	/*switch (nRet = dlg.DoModal())
-	{
-	case -1:
-		AfxMessageBox(_T("Dialog box could not be created!"));
-		break;
-	case IDOK:
-		//MessageBox(_T("Clicked New"));
-		break;
-	case IDCANCEL:
-		//MessageBox(_T("Clicked New"));
-		break;
-	case ID_BUTTON_DISPLAY_FOV:
-		MessageBox(_T("Clicked New"));
-		MessageBox(_T("Dialog box could not be created!"));
-		break;
-	default:
-		break;
-	}*/
-}
-
-
-void MainFrame::OnBnClickedButtonDisplayFov()
-{
-	//EndDialog(IDD_GRAY_SCALE);
-	//CFrameWnd::OnOK();
-	//ChannelDisplay* GetParent() const;
-	//ChannelDisplay dlg2(const);
-	//dlg2.DoModal();
-}
-
-
 void MainFrame::OnDisplayChannels()
 {
-	Generator dlg(NULL, FALSE, myConfig);
-	dlg.DoModal();
-}
+	//Generator dlg(NULL, FALSE, myConfig);
+	//dlg.DoModal();
 
+	
+}
 
 void MainFrame::OnDisplayFov()
 {
-	Generator dlg(NULL, TRUE, myConfig);
-	dlg.DoModal();
+	//Generator dlg(NULL, TRUE, myConfig);
+	//dlg.DoModal();
+	DisplayFrame* frm = new DisplayFrame(myConfig->get_total_fov_h(), myConfig->get_total_fov_v(), myConfig, TRUE);
+	frm->ShowWindow(SW_SHOW);
+	frm->UpdateWindow();
+	
 }

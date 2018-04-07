@@ -152,10 +152,9 @@
     <ClInclude Include="ChannelConfig.h" />
     <ClInclude Include="ChannelDisplay.h" />
     <ClInclude Include="Configuration.h" />
+    <ClInclude Include="DisplayFrame.h" />
     <ClInclude Include="FOVDisplay.h" />
     <ClInclude Include="Generator.h" />
-    <ClInclude Include="GrayScale.h" />
-    <ClInclude Include="MainDialog.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="stdafx.h" />
@@ -167,13 +166,11 @@
     <ClCompile Include="Channel.cpp" />
     <ClCompile Include="ChannelConfig.cpp" />
     <ClCompile Include="ChannelDisplay.cpp" />
+    <ClCompile Include="DisplayFrame.cpp" />
     <ClCompile Include="FOVDisplay.cpp" />
     <ClCompile Include="Generator.cpp" />
-    <ClCompile Include="GrayScale.cpp" />
-    <ClCompile Include="MainDialog.cpp" />
     <ClCompile Include="MainFrame.cpp" />
     <ClCompile Include="Screen.cpp" />
-    <ClCompile Include="Source.cpp" />
     <ClCompile Include="Configuration.cpp" />
   </ItemGroup>
   <ItemGroup>

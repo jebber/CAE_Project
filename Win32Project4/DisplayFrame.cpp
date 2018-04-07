@@ -1,20 +1,14 @@
-// Generator.cpp : implementation file
-//
-
 #include "stdafx.h"
-#include "Generator.h"
-#include "afxdialogex.h"
-#include "resource.h"
-#include "ChannelConfig.h"
+#include <afxwin.h>
+#include <afxdlgs.h>
+#include "DisplayFrame.h"
 #include "Configuration.h"
+#include "ChannelConfig.h"
 
-// Generator dialog
 
-IMPLEMENT_DYNAMIC(Generator, CDialog)
-
-Generator::Generator(CWnd* pParent /*=NULL*/, BOOL display_type, Configuration* config)
-	: CDialog(IDD_FOV_DISPLAY, pParent)
+DisplayFrame::DisplayFrame(int x, int y, Configuration* config, BOOL display_type)
 {
+	Create(0, NULL, WS_POPUP, CRect(0, 0, x, y));
 	this->display_type = display_type;
 	this->config = config;
 
@@ -24,23 +18,21 @@ Generator::Generator(CWnd* pParent /*=NULL*/, BOOL display_type, Configuration* 
 	channels = config->get_channels();
 }
 
-Generator::~Generator()
-{
-}
+DisplayFrame::~DisplayFrame() {}
 
-Bitmap* Generator::createBitmapPixels(HDC hdc, int totalFOV_width, int totalFOV_height)
+Bitmap* DisplayFrame::createBitmapPixels(HDC hdc, int totalFOV_width, int totalFOV_height)
 {
 	Bitmap* bitmap = new Bitmap(totalFOV_width, totalFOV_height, 2498570);
 	return bitmap;
 }
 
-void Generator::OnPaint()
+void DisplayFrame::OnPaint()
 {
 	CPaintDC dc(this);
 	createImage(dc, this->display_type);
 }
 
-void Generator::createImage(CPaintDC & x, BOOL display_type)
+void DisplayFrame::createImage(CPaintDC & x, BOOL display_type)
 {
 	totalFOV_Image = createBitmapPixels(x, totalFOV_width, totalFOV_height);
 
@@ -63,7 +55,7 @@ void Generator::createImage(CPaintDC & x, BOOL display_type)
 			} //end 1st stripe for
 		} //end 1st stripe for
 
-		  //2nd stripe
+			//2nd stripe
 		for (int i = stripeSize; i < stripeSize * 2; i++)
 		{
 			ARGB argb = Color::MakeARGB(28, 0, 0, 0);
@@ -74,7 +66,7 @@ void Generator::createImage(CPaintDC & x, BOOL display_type)
 			} //end 2nd stripe for
 		} //end 2nd stripe for
 
-		  //3rd stripe
+			//3rd stripe
 		for (int i = stripeSize * 2; i < stripeSize * 3; i++)
 		{
 			ARGB argb = Color::MakeARGB(56, 0, 0, 0);
@@ -85,7 +77,7 @@ void Generator::createImage(CPaintDC & x, BOOL display_type)
 			} //end 3rd stripe for 
 		} //end 3rd stripe for 
 
-		  //4th stripe
+			//4th stripe
 		for (int i = stripeSize * 3; i < stripeSize * 4; i++)
 		{
 			ARGB argb = Color::MakeARGB(84, 0, 0, 0);
@@ -96,7 +88,7 @@ void Generator::createImage(CPaintDC & x, BOOL display_type)
 			} //end 4th stripe for 
 		} //end 4th stripe for 
 
-		  //5th stripe
+			//5th stripe
 		for (int i = stripeSize * 4; i < stripeSize * 5; i++)
 		{
 			ARGB argb = Color::MakeARGB(112, 0, 0, 0);
@@ -107,7 +99,7 @@ void Generator::createImage(CPaintDC & x, BOOL display_type)
 			} //end 5th stripe for
 		} //end 5th stripe for
 
-		  //6th stripe
+			//6th stripe
 		for (int i = stripeSize * 5; i < stripeSize * 6; i++)
 		{
 			ARGB argb = Color::MakeARGB(140, 0, 0, 0);
@@ -118,7 +110,7 @@ void Generator::createImage(CPaintDC & x, BOOL display_type)
 			} //end 6th stripe for 
 		} //end 6th stripe for 
 
-		  //7th stripe
+			//7th stripe
 		for (int i = stripeSize * 6; i < stripeSize * 7; i++)
 		{
 			ARGB argb = Color::MakeARGB(168, 0, 0, 0);
@@ -129,7 +121,7 @@ void Generator::createImage(CPaintDC & x, BOOL display_type)
 			} //end 7th stripe for 
 		} //end 7th stripe for 
 
-		  //8th stripe
+			//8th stripe
 		for (int i = stripeSize * 7; i < stripeSize * 8; i++)
 		{
 			ARGB argb = Color::MakeARGB(196, 0, 0, 0);
@@ -140,7 +132,7 @@ void Generator::createImage(CPaintDC & x, BOOL display_type)
 			} //end 8th stripe for 
 		} //end 8th stripe for 
 
-		  //9th stripe
+			//9th stripe
 		for (int i = stripeSize * 8; i < stripeSize * 9; i++)
 		{
 			ARGB argb = Color::MakeARGB(224, 0, 0, 0);
@@ -151,7 +143,7 @@ void Generator::createImage(CPaintDC & x, BOOL display_type)
 			} //9th stripe for 
 		} //end 9th stripe for 
 
-		  //10th stripe - black
+			//10th stripe - black
 		for (int i = stripeSize * 9; i < totalFOV_height; i++)
 		{
 			ARGB argb = Color::MakeARGB(255, 0, 0, 0);
@@ -197,18 +189,6 @@ void Generator::createImage(CPaintDC & x, BOOL display_type)
 
 }
 
-
-
-void Generator::DoDataExchange(CDataExchange* pDX)
-{
-	CDialog::DoDataExchange(pDX);
-}
-
-
-
-BEGIN_MESSAGE_MAP(Generator, CDialog)
+BEGIN_MESSAGE_MAP(DisplayFrame, CFrameWnd)
 	ON_WM_PAINT()
 END_MESSAGE_MAP()
-
-
-// Generator message handlers

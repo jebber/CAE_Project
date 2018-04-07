@@ -147,23 +147,36 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Channel.h" />
+    <ClInclude Include="ChannelConfig.h" />
+    <ClInclude Include="ChannelDisplay.h" />
+    <ClInclude Include="Configuration.h" />
+    <ClInclude Include="FOVDisplay.h" />
+    <ClInclude Include="Generator.h" />
+    <ClInclude Include="GrayScale.h" />
     <ClInclude Include="MainDialog.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Screen.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="Tab1.h" />
-    <ClInclude Include="Tab2.h" />
-    <ClInclude Include="TabsDialog.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Channel.cpp" />
+    <ClCompile Include="ChannelConfig.cpp" />
+    <ClCompile Include="ChannelDisplay.cpp" />
+    <ClCompile Include="FOVDisplay.cpp" />
+    <ClCompile Include="Generator.cpp" />
+    <ClCompile Include="GrayScale.cpp" />
     <ClCompile Include="MainDialog.cpp" />
     <ClCompile Include="MainFrame.cpp" />
+    <ClCompile Include="Screen.cpp" />
     <ClCompile Include="Source.cpp" />
-    <ClCompile Include="Tab1.cpp" />
-    <ClCompile Include="Tab2.cpp" />
-    <ClCompile Include="TabsDialog.cpp" />
+    <ClCompile Include="Configuration.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Test.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

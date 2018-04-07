@@ -1,0 +1,18 @@
+name:Untitled Configuration
+total_fov_h:50
+total_fov_v:50
+viewer_distance:50
+num_channels:0
+test_pattern:0
+-:
+number:0
+fov_h:25
+fov_v:25
+location_h:52
+location_v:52
+-:
+number:0
+fov_h:10
+fov_v:10
+location_h:10
+location_v:10

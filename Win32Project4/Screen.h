@@ -31,4 +31,5 @@ public:
 	int ScreenVFOV;
 	CString NumberOfChannels;
 	afx_msg void OnCbnSelchangeNumberOfChannels();
+	int TestPattern;
 };

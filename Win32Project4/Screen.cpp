@@ -18,6 +18,7 @@ Screen::Screen(CWnd* pParent /*=NULL*/)
 	, ScreenHFOV(0)
 	, ScreenVFOV(0)
 	, NumberOfChannels(_T(""))
+	, TestPattern(0)
 {
 
 }
@@ -33,17 +34,18 @@ void Screen::DoDataExchange(CDataExchange* pDX)
 	DDV_MinMaxInt(pDX, ViewerDistance, 0, 9999);
 	DDX_CBString(pDX, IDC_SCREEN_GEOMETRY, ScreenGeometry);
 	DDV_MaxChars(pDX, ScreenGeometry, 15);
-	DDX_Text(pDX, IDC_SCREEN_HFOV, ScreenHFOV);
+	DDX_Text(pDX, IDC__SCREEN_HFOV, ScreenHFOV);
 	DDV_MinMaxInt(pDX, ScreenHFOV, 0, 99999);
 	DDX_Text(pDX, IDC_SCREEN_VFOV, ScreenVFOV);
 	DDV_MinMaxInt(pDX, ScreenVFOV, 0, 99999);
 	DDX_CBString(pDX, IDC_NUMBER_OF_CHANNELS, NumberOfChannels);
 	DDV_MaxChars(pDX, NumberOfChannels, 15);
+	DDX_Text(pDX, IDC_TEST_PATTERN, TestPattern);
 }
 
 
 BEGIN_MESSAGE_MAP(Screen, CDialog)
-	//ON_CBN_SELCHANGE(IDC_COMBOBOXEX1, &Screen::OnCbnSelchangeComboboxex1)
+//	ON_CBN_SELCHANGE(IDC_COMBOBOXEX1, &Screen::OnCbnSelchangeComboboxex1)
 	//ON_CBN_SELCHANGE(IDC_COMBO3, &Screen::OnCbnSelchangeCombo3)
 	ON_STN_CLICKED(IDC_SCREEN_VFOV, &Screen::OnStnClickedScreenVfov)
 	ON_CBN_SELCHANGE(IDC_SCREEN_GEOMETRY, &Screen::OnCbnSelchangeScreenGeometry)

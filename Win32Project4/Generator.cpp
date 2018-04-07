@@ -46,6 +46,7 @@ void Generator::createImage(CPaintDC & x, BOOL display_type)
 
 	switch (test_pattern) {
 	case 1: //GrayScale
+	{
 
 		Color pixelColor(255, 0, 0, 0);	//default of black
 
@@ -175,7 +176,7 @@ void Generator::createImage(CPaintDC & x, BOOL display_type)
 			int pixelsPerDegreeY = totalFOV_height / 180;
 
 			//Loop through ChannelConfig vector, create and display bitmaps for each channel
-			for (std::vector<ChannelConfig>::iterator it = channels.begin(); it != channels.end(); it++) {
+			for (std::vector<ChannelConfig>::iterator it = channels->begin(); it != channels->end(); it++) {
 
 				//pixel location of center of channel
 				int channel_loc_hPixels = pixelsPerDegreeX * it->get_location_h();
@@ -191,9 +192,335 @@ void Generator::createImage(CPaintDC & x, BOOL display_type)
 
 			}
 		}
+	}
 		break;
 
+	case 2: //checkerboard
+	{
+		Color pixelColor(255, 0, 0, 0);	//default of black
+		ARGB white = Color::MakeARGB(255, 255, 255, 255);
+		ARGB black = Color::MakeARGB(255, 0, 0, 0);
+		int i = 0;
+		int j = 0;
+		int ni = 1;
+		int nj = 1;
+		//convert degrees to pixels
+		int pixelsPerDegreeX = totalFOV_width / 180;
+		int pixelsPerDegreeY = totalFOV_height / 180;
+		int blockSizeX = pixelsPerDegreeX * 5;
+		int blockSizeY = pixelsPerDegreeY * 5;
+
+		for (j = 0; j < totalFOV_height; j += blockSizeY)
+		{
+			for (i = 0; i < totalFOV_width; i += blockSizeX)
+			{
+				if ((nj % 2 != 0) && (ni % 2 != 0))
+				{
+					for (int l = j; l < j + blockSizeY; l++)
+					{
+						for (int k = i; k < i + blockSizeX; k++)
+						{
+							pixelColor.SetValue(black);
+							totalFOV_Image->SetPixel(k, l, pixelColor);
+						}
+					}
+					ni++;
+				}
+				else if ((nj % 2 == 0) && (ni % 2 == 0))
+				{
+					for (int l = j; l < j + blockSizeY; l++)
+					{
+						for (int k = i; k < i + blockSizeX; k++)
+						{
+							pixelColor.SetValue(black);
+							totalFOV_Image->SetPixel(k, l, pixelColor);
+						}
+					}
+					ni++;
+				}
+				else
+				{
+					for (int l = j; l < j + blockSizeY; l++)
+					{
+						for (int k = i; k < i + blockSizeX; k++)
+						{
+							pixelColor.SetValue(white);
+							totalFOV_Image->SetPixel(k, l, pixelColor);
+						}
+					}
+					ni++;
+				}
+
+			}
+			nj++;
+
+		} //end for
+		Graphics graphics(x);
+		if (display_type) {
+			//display totalFOV image
+			graphics.DrawImage(&*totalFOV_Image, 0, 0);
+		}
+		else {
+			//display channels
+
+			//Loop through ChannelConfig vector, create and display bitmaps for each channel
+			for (std::vector<ChannelConfig>::iterator it = channels->begin(); it != channels->end(); it++) {
+
+				//pixel location of center of channel
+				int channel_loc_hPixels = pixelsPerDegreeX * it->get_location_h();
+				int channel_loc_vPixels = pixelsPerDegreeY * it->get_location_v();
+
+				//pixel location of top left corner of channel
+				int channel_TopLeftCornerX = channel_loc_hPixels - it->get_fov_h() / 2;
+				int channel_TopLeftCornerY = channel_loc_vPixels - it->get_fov_v() / 2;
+
+				Bitmap* bmp = totalFOV_Image->Clone(channel_loc_hPixels, channel_loc_vPixels, it->get_fov_h(), it->get_fov_v(), 2498570);
+
+				graphics.DrawImage(bmp, channel_loc_hPixels, channel_loc_vPixels);
+
+			}
+		}
 	}
+			break;
+	case 3: //flat white field
+	{
+		Color pixelColor(255, 0, 0, 0);	//default of black
+		int i = 0;
+		int j = 0;
+		ARGB argb = Color::MakeARGB(255, 255, 255, 255);
+
+		for (i = 0; i < totalFOV_height; i++)
+		{
+			for (j = 0; j < totalFOV_width; j++)
+			{
+				pixelColor.SetValue(argb);
+				totalFOV_Image->SetPixel(j, i, pixelColor);
+			}
+		}
+
+		Graphics graphics(x);
+		if (display_type) {
+			//display totalFOV image
+			graphics.DrawImage(&*totalFOV_Image, 0, 0);
+		}
+		else {
+			//display channels
+			//convert degrees to pixels
+			int pixelsPerDegreeX = totalFOV_width / 180;
+			int pixelsPerDegreeY = totalFOV_height / 180;
+
+			//Loop through ChannelConfig vector, create and display bitmaps for each channel
+			for (std::vector<ChannelConfig>::iterator it = channels->begin(); it != channels->end(); it++) {
+
+				//pixel location of center of channel
+				int channel_loc_hPixels = pixelsPerDegreeX * it->get_location_h();
+				int channel_loc_vPixels = pixelsPerDegreeY * it->get_location_v();
+
+				//pixel location of top left corner of channel
+				int channel_TopLeftCornerX = channel_loc_hPixels - it->get_fov_h() / 2;
+				int channel_TopLeftCornerY = channel_loc_vPixels - it->get_fov_v() / 2;
+
+				Bitmap* bmp = totalFOV_Image->Clone(channel_loc_hPixels, channel_loc_vPixels, it->get_fov_h(), it->get_fov_v(), 2498570);
+
+				graphics.DrawImage(bmp, channel_loc_hPixels, channel_loc_vPixels);
+
+			}
+		}
+	}
+	break;
+
+	case 4: // color bars
+	{
+		Color pixelColor(255, 0, 0, 0);	//default of black
+		int stripeSize = totalFOV_width / 8;
+
+		//White - 100% R,G,B
+		for (int i = 0; i < totalFOV_height; i++)
+		{
+			ARGB argb = Color::MakeARGB(255, 255, 255, 255);
+			for (int j = 0; j < stripeSize; j++)
+			{
+				pixelColor.SetValue(argb);
+				totalFOV_Image->SetPixel(j, i, pixelColor);
+			}
+		}
+		//Yellow - 100 % R, G 0 % B
+		for (int i = 0; i < totalFOV_height; i++)
+		{
+			ARGB argb = Color::MakeARGB(255, 255, 255, 0);
+			for (int j = stripeSize; j < stripeSize * 2; j++)
+			{
+				pixelColor.SetValue(argb);
+				totalFOV_Image->SetPixel(j, i, pixelColor);
+			}
+		}
+
+		//Cyan - 100 % G, B 0 % R
+		for (int i = 0; i < totalFOV_height; i++)
+		{
+			ARGB argb = Color::MakeARGB(255, 0, 255, 255);
+			for (int j = stripeSize * 2; j < stripeSize * 3; j++)
+			{
+				pixelColor.SetValue(argb);
+				totalFOV_Image->SetPixel(j, i, pixelColor);
+			}
+		}
+
+		//Green - 100 % G  0 % R, B
+		for (int i = 0; i < totalFOV_height; i++)
+		{
+			ARGB argb = Color::MakeARGB(255, 0, 255, 0);
+			for (int j = stripeSize * 3; j < stripeSize * 4; j++)
+			{
+				pixelColor.SetValue(argb);
+				totalFOV_Image->SetPixel(j, i, pixelColor);
+			}
+		}
+		//Magenta - 100 % R, B 0 % G
+		for (int i = 0; i < totalFOV_height; i++)
+		{
+			ARGB argb = Color::MakeARGB(255, 255, 0, 255);
+			for (int j = stripeSize * 4; j < stripeSize * 5; j++)
+			{
+				pixelColor.SetValue(argb);
+				totalFOV_Image->SetPixel(j, i, pixelColor);
+			}
+		}
+		//Red - 100 % R  0 % B, G
+		for (int i = 0; i < totalFOV_height; i++)
+		{
+			ARGB argb = Color::MakeARGB(255, 255, 0, 0);
+			for (int j = stripeSize * 5; j < stripeSize * 6; j++)
+			{
+				pixelColor.SetValue(argb);
+				totalFOV_Image->SetPixel(j, i, pixelColor);
+			}
+		}
+		//Blue - 100 % B 0 % R, G
+		for (int i = 0; i < totalFOV_height; i++)
+		{
+			ARGB argb = Color::MakeARGB(255, 0, 0, 255);
+			for (int j = stripeSize * 6; j < stripeSize * 7; j++)
+			{
+				pixelColor.SetValue(argb);
+				totalFOV_Image->SetPixel(j, i, pixelColor);
+			}
+		}
+		//Black - 0 % RGB
+		for (int i = 0; i < totalFOV_height; i++)
+		{
+			ARGB argb = Color::MakeARGB(255, 0, 0, 0);
+			for (int j = stripeSize * 7; j < stripeSize * 8; j++)
+			{
+				pixelColor.SetValue(argb);
+				totalFOV_Image->SetPixel(j, i, pixelColor);
+			}
+		}
+		Graphics graphics(x);
+		if (display_type) {
+			//display totalFOV image
+			graphics.DrawImage(&*totalFOV_Image, 0, 0);
+		}
+		else {
+			//display channels
+			//convert degrees to pixels
+			int pixelsPerDegreeX = totalFOV_width / 180;
+			int pixelsPerDegreeY = totalFOV_height / 180;
+
+			//Loop through ChannelConfig vector, create and display bitmaps for each channel
+			for (std::vector<ChannelConfig>::iterator it = channels->begin(); it != channels->end(); it++) {
+
+				//pixel location of center of channel
+				int channel_loc_hPixels = pixelsPerDegreeX * it->get_location_h();
+				int channel_loc_vPixels = pixelsPerDegreeY * it->get_location_v();
+
+				//pixel location of top left corner of channel
+				int channel_TopLeftCornerX = channel_loc_hPixels - it->get_fov_h() / 2;
+				int channel_TopLeftCornerY = channel_loc_vPixels - it->get_fov_v() / 2;
+
+				Bitmap* bmp = totalFOV_Image->Clone(channel_loc_hPixels, channel_loc_vPixels, it->get_fov_h(), it->get_fov_v(), 2498570);
+
+				graphics.DrawImage(bmp, channel_loc_hPixels, channel_loc_vPixels);
+
+			}
+		}
+	}
+	break;
+	
+	case 5: //1 degree grid
+	{
+		Color pixelColor(255, 0, 0, 0);	//default of black
+		ARGB black = Color::MakeARGB(255, 0, 0, 0);
+		ARGB white = Color::MakeARGB(255, 255, 255, 255);
+		ARGB green = Color::MakeARGB(255, 0, 255, 0);
+		//convert degrees to pixels
+		int pixelsPerDegreeX = totalFOV_width / 180;
+		int pixelsPerDegreeY = totalFOV_height / 180;
+		//total fov image black
+		for (int i = 0; i < totalFOV_height; i++)
+		{
+			for (int j = 0; j < totalFOV_width; j++)
+			{
+				pixelColor.SetValue(black);
+				totalFOV_Image->SetPixel(j, i, pixelColor);
+			}
+		}
+
+		//lines 1 degree apart
+		//vertical lines
+		for (int i = 0; i < totalFOV_height; i++)
+		{
+			for (int j = 0; j < totalFOV_width; j += pixelsPerDegreeX)
+			{
+				pixelColor.SetValue(white);
+				totalFOV_Image->SetPixel(j, i, pixelColor);
+			}
+		}
+
+		//horizontal lines
+		for (int i = 0; i < totalFOV_height; i += pixelsPerDegreeY)
+		{
+			for (int j = 0; j < totalFOV_width; j++)
+			{
+				if (i == totalFOV_height / 2)
+				{
+					pixelColor.SetValue(green);
+					totalFOV_Image->SetPixel(j, i, pixelColor);
+				}
+				else
+				{
+					pixelColor.SetValue(white);
+					totalFOV_Image->SetPixel(j, i, pixelColor);
+				}
+			}
+		}
+		Graphics graphics(x);
+		if (display_type) {
+			//display totalFOV image
+			graphics.DrawImage(&*totalFOV_Image, 0, 0);
+		}
+		else {
+			//display channels
+			//Loop through ChannelConfig vector, create and display bitmaps for each channel
+			for (std::vector<ChannelConfig>::iterator it = channels->begin(); it != channels->end(); it++) {
+
+				//pixel location of center of channel
+				int channel_loc_hPixels = pixelsPerDegreeX * it->get_location_h();
+				int channel_loc_vPixels = pixelsPerDegreeY * it->get_location_v();
+
+				//pixel location of top left corner of channel
+				int channel_TopLeftCornerX = channel_loc_hPixels - it->get_fov_h() / 2;
+				int channel_TopLeftCornerY = channel_loc_vPixels - it->get_fov_v() / 2;
+
+				Bitmap* bmp = totalFOV_Image->Clone(channel_loc_hPixels, channel_loc_vPixels, it->get_fov_h(), it->get_fov_v(), 2498570);
+
+				graphics.DrawImage(bmp, channel_loc_hPixels, channel_loc_vPixels);
+
+			}
+		}
+	}
+	break;
+	} //end switch
 
 }
 
